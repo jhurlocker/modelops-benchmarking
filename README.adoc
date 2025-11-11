@@ -45,15 +45,24 @@ This final step is what provides the definitive answer, allowing the AI Engineer
 
 image::images/ai_engineer_diagram.png["AI Engineer Pipeline"]
 
+== Contents
+- <<learning-goals, Learning Goals>>
+- <<pre-reqs, Pre-reqs>>
+- <<model-ops, ModelOps Tutorial>>
+- <<ai-engineer, AI Engineer Tutorial>>
+
+[[learning-goals]]
 == Learning Goals
 - 
 
+[[pre-reqs]]
 == Pre-reqs
 - OpenShift is installed
 - OpenShift AI is installed
 - OpenShift AI is configured with a GPU
 - This tutorial was test with OpenShift AI 2.25 and OpenShift 4.19
 
+[[model-ops]]
 == ModelOps tutorial (est. 1 hour)
 This section requires admin access because you will be installing operators and creating new projects.
 
@@ -581,7 +590,8 @@ These UI result pages for GuideLLM and lm-eval are not part of the product, but 
 === Recap
 We pushed a model into our organization's local Quay repository, ran a pipeline to get performance and evaluation benchmarks on that model deployed on our our organization's infrastructure. The results were uploaded to S3 storage and added to the the model registry in OpenShift AI so other users can easily find the model.
 
-== AI Engineer Role
+[[ai-engineer]]
+== AI Engineer Tutorial (est. 30 minutes)
 As an AI Engineer I want to be able to find models available in my organization and run performance and evaluation benchmarks with custom data that represents my application's use case.
 
 === Configure AI Pipelines
