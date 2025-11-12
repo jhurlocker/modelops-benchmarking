@@ -1,19 +1,13 @@
 
-= Automated ModelOps Benchmarking
-// Model selection is not an easy task. How can you find the best model for your use case? Is the model fast enough and is it accurate enough? Even if you narrow down the choice of models to a select few you will need to test and evaluate them on your custom data that you're expecting for your use case. Many organizations restrict access to GPUs and to sites to download models. 
-
-
-// There is a growing need inside organizations to make a variety of LLMs available to application teams. Whether that is achieved through Models as a Service (MaaS) or through dedicated environments, there needs to be a standard process in place to bring those models in. Opening the network to allow everybody download models is not recommended, so there should be a team responsible for implementing the process. The team responsible for this should be the IT Operations team, or as we'll call them throughout this tutorial, the ModelOps team. Simply bringing a model in and deploying it is not enough. ModelOps teams should run performance benchmarks on the model to understand and publish how the model performs on the organization's infrastructure. Accuracy tests against various evaluation datasets should also be executed and published internally. These performance and accuracy benchmarks allow application teams to narrow down the LLMs that best fit the requirements of their use case (e.g. chatbot or batch process).
-
-// Application developers or, as we'll refer to them in the rest of this tutorial, AI Engineers, need to be able to find LLMs that best fit their use cases. While the default benchmarks and evaluations are a great starting point in finding the best LLM for the job, they don't give you results based on a use case. To know how an LLM performs for a use case you need to run benchmarks with data that is representative of the use case. These custom prompt and accuracy evaluation datasets show you how well or how poorly an LLM performs in benchmark testing.
+= Secure Model Ingestion and Evaluation with OpenShift AI
 
 *The LLM Selection Problem*
 
-As organizations rush to adopt AI they quickly find that not all LLMs are created equal and model selection is not easy. Allowing developers to download and deploy any model is unsustainable. It creates massive security vulnerabilities, leads to resource waste, and provides no clear way to compare model capabilities for a given business problem.
+As organizations rush to adopt AI they quickly find that LLMs are not created equal and model selection is not an easy task. Allowing developers to download and deploy any model they want is not sustainable. This creates massive security vulnerabilities, leads to resource waste, and provides no clear way to compare model capabilities for a given business problem.
 
 *The Solution: A Two-Part ModelOps Strategy*
 
-A successful enterprise AI strategy requires a formal process for managing the LLM lifecycle. This involves two key groups: a central Operations or ModelOps team and the AI Engineers building applications.
+A successful enterprise AI strategy requires a formal process for managing the LLM lifecycle. This involves two key groups: a central ModelOps team and the AI Engineers building applications.
 
 *Part 1: The ModelOps Team*
 
@@ -44,6 +38,12 @@ Therefore, the AI Engineer's workflow becomes:
 This final step is what provides the definitive answer, allowing the AI Engineer to confidently determine if a model's performance and accuracy are a true fit for their unique application.
 
 image::images/ai_engineer_diagram.png["AI Engineer Pipeline"]
+
+== Personas
+The terms ModelOps and AI Engineer are used throughout this tutorial. Since these might not be well defined or dedicated roles in your organization we'll offer the following role mapping for this tutorial:
+
+* ModelOps - In your organization this could be your IT operations team or DevOps team.
+* AI Engineer - In your organization this could be an application developer or a data scientist.
 
 == Learning Outcomes
 - Implement a Two-Part ModelOps Strategy: Clearly distinguish between the responsibilities of the ModelOps or IT Operations team and a consuming AI Engineer or Developer team.
