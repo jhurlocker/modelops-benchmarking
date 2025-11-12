@@ -1,6 +1,9 @@
 [[model-ops]]
 = ModelOps tutorial (est. 1 hour)
-This section requires admin access because you'll be installing operators and creating new projects.
+
+*Goal*: As a member of the ModelOps team I want to be able to bring in models from external sites, get baseline performance and accuracy results on that model, and register the model along with the results in a central model registry. This will enable people in my organization to discover models that might be good candidates for their applications.  
+
+NOTE: This section requires admin access because you'll be installing operators and creating new projects.
 
 === Configure OpenShift AI Model Registry
 . Clone the project repository
@@ -513,6 +516,6 @@ These UI result pages for GuideLLM and lm-eval are not *supported by Red Hat* an
 NOTE: There is a https://github.com/vllm-project/guidellm?tab=readme-ov-file#guidellm-ui[GuideLLM benchmark UI] that you should consider if you don't want to create or maintain your own solution. 
 
 === Recap
-* We pushed a model into our organization's local Quay repository.
+* You pushed a model into our organization's local Quay repository.
 * Ran a pipeline to get performance and evaluation benchmarks on that model running on our organization's infrastructure. 
 * Uploaded the results to S3 storage and registered a version of the model in the OpenShift AI model registry so other users can easily discover the model and associated benchmark results.
