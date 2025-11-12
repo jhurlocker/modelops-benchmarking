@@ -67,3 +67,6 @@ The terms ModelOps and AI Engineer are used throughout this tutorial. Since thes
 ** For the AI Engineer or Application developer role that covers part 2 of the solution presented above.
 +
 NOTE: The ModelOps tutorial must be completed before you can start the AI Engineer tutorial.
+
+=== Special Thanks
+Parts of this tutorial builds on or reuses some of the awesome work that https://github.com/taylorjordanNC[Taylor Smith] and https://github.com/rcarrata[Roberto Carratalá] have created. 
