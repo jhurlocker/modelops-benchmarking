@@ -1,6 +1,6 @@
 [[model-ops]]
 = ModelOps tutorial (est. 1 hour)
-This section requires admin access because you will be installing operators and creating new projects.
+This section requires admin access because you'll be installing operators and creating new projects.
 
 === Configure OpenShift AI Model Registry
 . Clone the project repository
@@ -12,7 +12,7 @@ git clone https://github.com/jhurlocker/modelops-benchmarking.git
 
 . Make sure you're logged into your OpenShift cluster as *admin*. You can copy the login command from the OpenShift web console in the top right dropdown under your username. 
 +
-image::../images/ocp_token_menu.png["Click the copy login command"]
+image::../images/ocp_token_menu.png["Click the copy login command", 25%, 25%]
 +
 image::../images/ocp_token_page.png["Copy the login with this token section"]
 
@@ -39,7 +39,7 @@ image::../images/rhoai_sub_225.png["RHOAI install strategy completed without err
 oc patch datasciencecluster default-dsc --type=merge -p '{"spec":{"components":{"modelregistry":{"managementState":"Managed"}}}}'
 ----
 
-. The model registry needs a database to store it's data. In your terminal window change the directory to *modelops-benchmarking* and apply the deployment below so the model registry can store data.
+. The model registry needs a database to store version data. In the project you cloned change the directory to *modelops-benchmarking* and apply the deployment below so the model registry can store data.
 +
 [source,sh,role=execute]
 ----
@@ -51,11 +51,11 @@ oc apply -f model-registry/mysql-deployment.yaml
 
 . Create a model registry through the OpenShift AI web console.
 
-.. Login to your OpenShift AI web console. To find the route go to your OpenShift web consoled and click on _Network -> Routes_. Search for *rhods* and click on the location URL.
+.. Login to your OpenShift AI web console. To find the route go to your OpenShift web console and click on *Network -> Routes*. Search for *rhods* and click on the location URL.
 +
 image::../images/rhoai_route.png["Open the OpenShift AI web console"]
 
-.. Go to _Settings -> Model registry settings_. Click on *Create model registry*.
+.. In OpenShift AI go to *Settings -> Model registry settings*. Click on *Create model registry*.
 +
 image::../images/create_model_registry.png["Create a model registry"]
 
@@ -112,7 +112,7 @@ sampledb
 image::../images/model_registry_available.png["Model registry status available"]
 
 === Setup S3 storage
-We'll be deploying Mino for S3 storage and a generic UI to manage S3 buckets. The UI should work with any s3 compatible storage.
+We'll be deploying Minio for S3 storage and we'll use a generic UI to manage S3 buckets. The UI should work with any S3 compatible storage.
 
 NOTE: If you already have S3 storage you can skip this section.
 
@@ -125,8 +125,7 @@ oc apply -f storage/minio-backend.yaml -n s3-storage
 oc apply -f storage/s3ui-deployment.yaml -n s3-storage
 ----  
 
-. Login to the s3 UI and create a bucket.
-We'll use S3 to store GuideLLM results, lm-eval results, custom benchmark files, and images in Quay. 
+. Login to the S3 UI and create a bucket. We'll use S3 to store GuideLLM results, lm-eval results, custom benchmark files, and images for Quay. 
 
 .. Get the S3 UI route
 +
@@ -146,8 +145,8 @@ benchmark-results
 +
 image::../images/s3ui_create_benchmark_bucket.png["Create benchmark results bucket"]
 +
-NOTE: The UI is configured to connect to the local Mino service running in the same namespace. If you are using another S3 storage provider click on the *Configure* button in the upper right corner to update the connection configuration. +
-This UI is not supported by Red Hat or any other company and should be used for demo purposes only. 
+NOTE: The UI is configured to connect to the local Minio service running in the same namespace. If you are using another S3 storage provider click on the *Configure* button in the upper right corner to update the connection configuration. +
+This UI is *not supported by Red Hat* or any other company and should be used for demo purposes only. 
 
 === Deploy Quay
 We'll use Quay as our internal container registry where we'll push our modelcar image.
@@ -160,7 +159,7 @@ We'll use Quay as our internal container registry where we'll push our modelcar 
 ----
 oc new-project quay-registry
 ----  
-. Update the _quay/quay-config-secret-rados_ hostname with the Minio API route.
+. Update the *quay/quay-config-secret-rados* hostname with the Minio API route.
 .. Get the Minio API route.
 +
 [source,sh,role=execute]
@@ -189,7 +188,7 @@ oc get pods -n quay-registry --watch
 +
 image::../images/quay_operator_status.png["Quay operator status"]
 
-.. Create a new S3 bucket named _quay-registry-bucket_
+.. Create a new S3 bucket named *quay-registry-bucket*.
 +
 image::../images/s3_quay_bucket.png["S3 Quay bucket"]
 
@@ -200,7 +199,7 @@ image::../images/s3_quay_bucket.png["S3 Quay bucket"]
 oc apply -f quay/quay-registry.yaml -n quay-registry
 ----
 
-.. Open the Quay route in a web console
+.. Open the Quay route in a web browser.
 +
 [source,sh,role=execute]
 ----
@@ -209,11 +208,11 @@ oc get route -n quay-registry | grep my-quay-registry-quay-quay
 
 .. Click on *Create Account* 
 +
-image::../images/quay_create_acct.png["Create Quay account", 50%, 50%]
+image::../images/quay_create_acct.png["Create Quay account", 35%, 35%]
 
 .. Enter in form fields and click *Create Account*
 +
-image::../images/quay_acct_create_form.png["Create Quay account form", 50%, 50%]
+image::../images/quay_acct_create_form.png["Create Quay account form", 35%, 35%]
 +
 *Username*:
 +
@@ -264,7 +263,7 @@ podman login $QUAY_URL -u admin -p admin123
 podman tag quay.io/redhat-ai-services/modelcar-catalog:granite-3.3-2b-instruct $QUAY_URL/admin/granite-3.3-2b-instruct
 ----
 
-.. Push the image
+.. Push the image. This may take two attempts. If there is a failure to push the image initially podman should retry.
 +
 [source,sh,role=execute]
 ----
@@ -310,20 +309,10 @@ image::../images/trustyai_pods_ready.png["TrustyAI pods ready"]
 oc patch datasciencecluster default-dsc --type=merge -p '{"spec":{"components":{"trustyai":{"eval":{"lmeval":{"permitCodeExecution":"allow","permitOnline":"allow"}}}}}}'
 ----
 
-// +
-// [source,sh,role=execute]
-// ----
-// oc patch configmap trustyai-service-operator-config -n redhat-ods-applications  \
-// --type merge -p '{"metadata": {"annotations": {"opendatahub.io/managed": "false"}}}'
-// oc patch configmap trustyai-service-operator-config -n redhat-ods-applications \
-// --type merge -p '{"data":{"lmes-allow-online":"true","lmes-allow-code-execution":"true"}}'
-// oc rollout restart deployment trustyai-service-operator-controller-manager -n redhat-ods-applications
-// ----
-
 === Deploy the Pipeline
 Now that we have all of the tools configured we can deploy our pipeline.
 
-. Create a new project
+. Create a new project.
 +
 [source,sh,role=execute]
 ----
@@ -353,7 +342,7 @@ oc apply -f guidellm-pipeline/pipeline/pvc.yaml -n vllm
 oc apply -f results-ui/deployment.yaml -n vllm
 ----
 
-. Update your _guidellm-pipeline/pipeline/benchmark-eval-pipelinerun.yaml_ to use your local Quay endpoint that contains the granite-2b model.
+. Update your *guidellm-pipeline/pipeline/benchmark-eval-pipelinerun.yaml* to use your local Quay endpoint that contains the granite-2b model.
 +
 [source,sh,role=execute]
 ----
@@ -363,7 +352,7 @@ oc get route -n quay-registry | grep my-quay-registry-quay-quay | awk '{print $2
 +
 image::../images/pipelinerun_quay_url.png["Update model URL to Quay route"]
 
-. We need to add configmaps to our pipeline run so that lm-eval-harness can load the appropriate evaluation tasks. We will go into more detail on the LMEvalJob in later sections.
+. We need to add configmaps to our pipeline run so that lm-eval-harness can load the appropriate evaluation tasks. We'll go into more detail on the LMEvalJob in later sections.
 +
 [source,sh,role=execute]
 ----
@@ -372,15 +361,13 @@ oc create configmap custom-mmlu --from-file=guidellm-pipeline/custom-lm-eval/cus
 ----
 
 . Time to run the pipeline!
-Before we apply the PipelineRun lets take a look at the parameters we're setting in _guidellm-pipeline/pipeline/benchmark-eval-pipelinerun.yaml_.
+Before we apply the PipelineRun lets take a look at the parameters we're setting in *guidellm-pipeline/pipeline/benchmark-eval-pipelinerun.yaml*.
 
 .. Model parameters
 +
 *target*: The inference endpoint URL.
 +
 *model-name*: The model name we'll use in the deployment.
-// +
-// NOTE: This guide was originally tested with the granite-3.3-8b model. We'll be deploying the smaller granite-3.3-2b model to speed up deployment. 
 +
 *processor*: The tokenizer we'll be using for GuideLLM and lm-eval.
 +
@@ -410,7 +397,7 @@ image::../images/pipeline_params_guidellm.png["GuideLLM specific parameters"]
 +
 *s3-access-key-id*: S3 access key
 +
-*s3-secret-access-key*: S# secret key
+*s3-secret-access-key*: S3 secret key
 +
 image::../images/pipeline_params_s3.png["S3 specific parameters"]
 
@@ -422,7 +409,7 @@ image::../images/pipeline_params_s3.png["S3 specific parameters"]
 +
 *lm-eval-custom*: Are we using a custom evaluation dataset for lm-eval? For the initial run by the ModelOps team we'll run the default dataset.
 +
-*custom-data*: Are we using custom benchmark data for guidelllm? For the initial run by the ModelOps team we'll run the default dataset.
+*custom-data*: Are we using custom benchmark data for GuideLLM? For the initial run by the ModelOps team we'll run the default dataset.
 +
 *custom-filename*: Name of the custom prompt file to use. For the initial run by the ModelOps team we'll run the default dataset.
 +
@@ -443,9 +430,9 @@ image::../images/pipeline_params_helm.png["helm parameters"]
 oc create -f guidellm-pipeline/pipeline/benchmark-eval-pipelinerun.yaml -n vllm
 ----
 
-. *View Pipelinerun* - Go to the OpenShift web console and select _Pipelines_. Make sure you have selected the *vllm* project. You should see the pipeline you applied earlier. Click the *PipelineRuns* tab.
+. *View Pipelinerun* - Go to the OpenShift web console and select *Pipelines*. Make sure you have selected the *vllm* project. You should see the pipeline you applied earlier. Click the *PipelineRuns* tab.
 +
-image::../images/ocp-web-console-pipelines.png["ocp pipelines page"]
+image::../images/ocp-web-console-pipelines.png["ocp pipelines page", 60%, 60%]
 +
 Click on the pipeline run that you just created and select the *Logs* tab.
 +
@@ -461,7 +448,7 @@ When the benchmark completes you'll see the list of result files that are create
 +
 image::../images/pipelinerun-benchmark.png["benchmark task logs"]
 
-. *Upload GuideLLM task* - We upload the GuideLLM results to the _benchmark_results_ bucket to S3 storage.  
+. *Upload GuideLLM task* - We upload the GuideLLM results to the *benchmark_results* bucket to S3 storage.  
 +
 Note the file names in the log that were successfully uploaded.
 +
@@ -475,19 +462,19 @@ The *benchmark_<TIMESTAMP>.txt* contains a summary of the run.
 +
 image::../images/guidellm_benchmark_summary.png["GuideLLM summary results"]
 +
-We'll take a look at these files again when we look at the version registered in the OpenShift AI model registry.  
+We'll revisit these files again when we look at the version registered in the OpenShift AI model registry.  
 
 . *lm-eval task* - If you scroll up in the logs you should see the lm-eval results at the top. The full results are printed out to the log in JSON format.
 +
 image::../images/pipelinerun_lmeval.png["lm-eval task"]
 
-. *Upload lm-eval task* - We upload the lm-eval results to the _benchmark_results_ bucket to S3 storage.  
+. *Upload lm-eval task* - We upload the lm-eval results to the *benchmark_results* bucket to S3 storage.  
 +
 Note the file names in the log that were successfully uploaded.
 +
 image::../images/pipelinerun_lmeval_upload.png["lm-eval upload task"]
 +
-If you go back to the S3 UI and look at the _benchmark_results_ bucket you should see the *<TIMESTAMP>_lm-eval-results.json* file now.
+If you go back to the S3 UI and look at the *benchmark_results* bucket you should see the *<TIMESTAMP>_lm-eval-results.json* file now.
 +
 image::../images/s3_benchmark_results_lmeval.png["lm-eval results in S3"]
 
@@ -495,13 +482,13 @@ image::../images/s3_benchmark_results_lmeval.png["lm-eval results in S3"]
 +
 image::../images/pipelinerun-register-model.png["register model in OpenShift AI"]
 +
-Go to your OpenShift AI web console. Expand _Models_ and select _Model Registry_. You should see *granite-2b* in your model registry now. Click on the link and then click on the *Versions* tab.
+Go to your OpenShift AI web console. Expand *Models* and select *Model Registry*. You should see *granite-2b* in your model registry now. Click on the link and then click on the *Versions* tab.
 +
 Since this is the first time you've run the pipeline you'll only see one version available. Click on that version.
 +
 image::../images/model_registry_version.png["OpenShift AI model registry version page"]
 +
-Scroll down on the *Details* tab for this version until you see all of the version metadata. Notice the author is the one we set in our pipeline run parameters.
+Scroll down on the *Details* tab of this version until you see all of the version metadata. Notice the author is the one we set in our pipeline run parameters.
 +
 Also, notice all of the properties that have been set from the pipeline run. All of the blue dots are benchmark results with default datasets.
 +
@@ -513,15 +500,19 @@ image::../images/guidellm_ui_resultspg1.png["GuideLLM results UI page 1"]
 +
 image::../images/guidellm_ui_resultspg2.png["GuideLLM results UI page 2"]
 +
-This UI summarizes the GuideLLM results that were generated in our GuideLLM pipeline task and uploaded to the _benchmark_results_ S3 bucket.
+This UI summarizes the GuideLLM results that were generated in our GuideLLM pipeline task and uploaded to the *benchmark_results* S3 bucket.
 +
-Go back to the OpenShift AI model registry page and click on the _lm_eval Results UI_ URL in the value column. 
+Go back to the OpenShift AI model registry page and click on the *lm_eval Results UI* URL in the value column. 
 +
 image::../images/lmeval_ui_results.png["lm-eval results UI page"]
 +
-This UI summarizes the lm-eval results that were generated in our lm-eval pipeline task and uploaded to the _benchmark_results_ S3 bucket.
+This UI summarizes the lm-eval results that were generated in our lm-eval pipeline task and uploaded to the *benchmark_results* S3 bucket.
 +
-These UI result pages for GuideLLM and lm-eval are not part of the product, but hopefully they give you an idea of how you can make these results easily consumable to other people in your organization, like an AI Engineer for instance. 
+These UI result pages for GuideLLM and lm-eval are not *supported by Red Hat* and are only used in this tutorial to give you an idea of how you can make these results easily consumable to other people in your organization, like an AI Engineer for instance. 
++
+NOTE: There is a https://github.com/vllm-project/guidellm?tab=readme-ov-file#guidellm-ui[GuideLLM benchmark UI] that you should consider if you don't want to create or maintain your own solution. 
 
 === Recap
-We pushed a model into our organization's local Quay repository, ran a pipeline to get performance and evaluation benchmarks on that model deployed on our our organization's infrastructure. The results were uploaded to S3 storage and added to the the model registry in OpenShift AI so other users can easily find the model.
+* We pushed a model into our organization's local Quay repository.
+* Ran a pipeline to get performance and evaluation benchmarks on that model running on our organization's infrastructure. 
+* Uploaded the results to S3 storage and registered a version of the model in the OpenShift AI model registry so other users can easily discover the model and associated benchmark results.
