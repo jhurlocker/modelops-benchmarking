@@ -62,9 +62,9 @@ The terms ModelOps and AI Engineer are used throughout this tutorial. Since thes
 
 == Tutorials
 * <<docs/modelops_tutorial.adoc#model-ops, ModelOps Tutorial>> (est. 1 hour)
-** For the ModelOps or IT Operations role that covers part 1 of the solution presented above.
+** For the ModelOps role that covers part 1 of the solution presented above.
 * <<docs/ai_engineer_tutorial.adoc#ai-engineer, AI Engineer Tutorial>> (est. 30 minutes)
-** For the AI Engineer or Application developer role that covers part 2 of the solution presented above.
+** For the AI Engineer role that covers part 2 of the solution presented above.
 +
 NOTE: The ModelOps tutorial must be completed before you can start the AI Engineer tutorial.
 

@@ -519,3 +519,5 @@ NOTE: There is a https://github.com/vllm-project/guidellm?tab=readme-ov-file#gui
 * You pushed a model into our organization's local Quay repository.
 * Ran a pipeline to get performance and evaluation benchmarks on that model running on our organization's infrastructure. 
 * Uploaded the results to S3 storage and registered a version of the model in the OpenShift AI model registry so other users can easily discover the model and associated benchmark results.
+
+*Continue* -> <<docs/ai_engineer_tutorial.adoc#ai-engineer, AI Engineer Tutorial>>
